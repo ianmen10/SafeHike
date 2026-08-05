@@ -1,20 +1,25 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.api.api import api_router
+from app.core.config import settings
 
 app = FastAPI(
-    title="SafeHike API",
+    title=settings.PROJECT_NAME,
     description="Backend API for SafeHike Platform",
     version="1.0.0"
 )
 
-# Konfigurasi CORS agar frontend dapat mengakses API (Penting untuk pemisahan layer)
+# Konfigurasi CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Ganti dengan spesifik origin di production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Integrasi Master Router
+app.include_router(api_router, prefix=settings.API_V1_STR)
 
 @app.get("/")
 def read_root():
