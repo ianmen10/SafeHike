@@ -1,13 +1,13 @@
-version: '3.8'
+version: "3.9"
 
 services:
   db:
-    image: postgres:15-alpine
-    container_name: safehike_db
-    restart: always
+    image: postgres:16
+    container_name: safehike-db
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: safehike
+      POSTGRES_PASSWORD: safehike123
       POSTGRES_DB: safehike
     ports:
       - "5432:5432"
