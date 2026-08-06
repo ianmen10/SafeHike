@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     
     # Karena Docker tidak terdeteksi di terminal, kita menggunakan SQLite Async untuk lokal
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./safehike.db")
+    
+    # Konfigurasi AI
+    GEMINI_API_KEY: str | None = os.getenv("GEMINI_API_KEY", None)
 
     class Config:
         case_sensitive = True
