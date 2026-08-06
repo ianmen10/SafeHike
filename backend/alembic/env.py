@@ -24,7 +24,9 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 from app.db.base_class import Base
-from app.models.user import User # Import semua model di sini
+from app.models.user import User
+from app.models.mountain import Mountain
+from app.models.trail import Trail
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
