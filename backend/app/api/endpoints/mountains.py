@@ -18,6 +18,18 @@ async def read_mountains(
     mountains = await crud_mountain.get_multi(db, skip=skip, limit=limit)
     return mountains
 
+@router.get("/{mountain_id}", response_model=Mountain)
+async def read_mountain(
+    mountain_id: int,
+    db: AsyncSession = Depends(deps.get_db),
+) -> Any:
+    """Mengambil detail satu gunung berdasarkan ID beserta jalurnya."""
+    mountain = await crud_mountain.get(db, id=mountain_id)
+    if not mountain:
+        raise HTTPException(status_code=404, detail="Gunung tidak ditemukan")
+    return mountain
+
+
 @router.post("/", response_model=Mountain)
 async def create_mountain(
     *,

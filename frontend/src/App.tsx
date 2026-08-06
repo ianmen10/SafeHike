@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Dashboard from './pages/Dashboard';
+import MountainDetail from './pages/MountainDetail';
 
 const queryClient = new QueryClient();
 
@@ -30,8 +31,17 @@ export default function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/mountains/:id" 
+            element={
+              <ProtectedRoute>
+                <MountainDetail />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
   );
 }
+
