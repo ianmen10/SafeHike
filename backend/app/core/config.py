@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     
     # Konfigurasi AI
     GEMINI_API_KEY: str | None = None
+    GEMINI_MODEL: str = "gemini-3.6-flash"
 
     class Config:
         case_sensitive = True

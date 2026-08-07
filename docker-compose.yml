@@ -2,12 +2,12 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:16
-    container_name: safehike-db
+    image: postgres:15
+    container_name: SafeHike
     restart: unless-stopped
     environment:
-      POSTGRES_USER: safehike
-      POSTGRES_PASSWORD: safehike123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: [PASSWORD]
       POSTGRES_DB: safehike
     ports:
       - "5432:5432"
