@@ -217,7 +217,7 @@ export default function MountainDetail() {
           </div>
 
           {/* Weather Quick Card */}
-          {weather && (
+          {weather && weather.weather && (
             <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl backdrop-blur-md space-y-4">
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
@@ -230,10 +230,10 @@ export default function MountainDetail() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-3xl font-extrabold text-white">
-                    {Math.round(weather.weather.temp)}°C
+                    {Math.round(weather.weather.temp ?? 0)}°C
                   </div>
                   <div className="text-xs text-slate-400 mt-1 capitalize">
-                    {weather.weather.description} (Terasa {Math.round(weather.weather.feels_like)}°C)
+                    {weather.weather.description ?? '-'} (Terasa {Math.round(weather.weather.feels_like ?? 0)}°C)
                   </div>
                 </div>
                 <div className="p-3 bg-slate-800/80 rounded-xl">
@@ -244,11 +244,11 @@ export default function MountainDetail() {
               <div className="grid grid-cols-2 gap-3 pt-2 text-xs border-t border-slate-800/60">
                 <div className="flex items-center gap-2 text-slate-400">
                   <Wind className="h-4 w-4 text-teal-400" />
-                  <span>Kecepatan Angin: <strong className="text-slate-200">{weather.weather.wind_speed} m/s</strong></span>
+                  <span>Kecepatan Angin: <strong className="text-slate-200">{weather.weather.wind_speed ?? 0} m/s</strong></span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-400">
                   <Droplets className="h-4 w-4 text-blue-400" />
-                  <span>Kelembapan: <strong className="text-slate-200">{weather.weather.humidity}%</strong></span>
+                  <span>Kelembapan: <strong className="text-slate-200">{weather.weather.humidity ?? 0}%</strong></span>
                 </div>
               </div>
             </div>

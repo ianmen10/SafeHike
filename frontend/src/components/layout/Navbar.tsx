@@ -1,6 +1,5 @@
-import { MountainIcon, LogOut } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
-
+import { MountainIcon, LogOut } from 'lucide-react';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -11,29 +10,39 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-2xl border-b border-slate-800/80">
+    <nav className="glass sticky top-0 z-50 border-b border-slate-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="p-2.5 bg-emerald-500/20 border border-emerald-500/30 rounded-xl group-hover:bg-emerald-500/30 transition-all shadow-lg shadow-emerald-500/10">
-              <MountainIcon className="h-5 w-5 text-emerald-400" />
+        <div className="flex justify-between h-15 items-center py-3">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="p-2 bg-brand-500 rounded-xl shadow-sm shadow-brand-500/30 group-hover:bg-brand-600 transition-colors">
+              <MountainIcon className="h-4.5 w-4.5 text-white" style={{ height: '18px', width: '18px' }} />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="font-black text-xl tracking-tight text-white group-hover:text-emerald-400 transition-colors">
-                SafeHike
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-400 font-bold">
-                3D PLATFORM
-              </span>
+            <div>
+              <span className="font-bold text-lg text-slate-900 tracking-tight leading-none">SafeHike</span>
+              <div className="text-[10px] text-slate-400 font-medium leading-none mt-0.5">AI Mountaineering Platform</div>
             </div>
           </Link>
-          <button
-            onClick={handleLogout}
-            className="flex items-center space-x-2 text-slate-400 hover:text-rose-400 transition-all px-4 py-2 rounded-xl bg-slate-900/60 hover:bg-rose-500/10 border border-slate-800 hover:border-rose-500/30 text-xs font-bold"
-          >
-            <span>Keluar</span>
-            <LogOut className="h-3.5 w-3.5" />
-          </button>
+
+          {/* Right Side */}
+          <div className="flex items-center gap-3">
+            {/* Live Status indicator */}
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              Sistem Aktif
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-3.5 py-2 text-sm text-slate-500 hover:text-slate-700 font-medium rounded-lg hover:bg-slate-100 transition-all"
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">Keluar</span>
+            </button>
+          </div>
         </div>
       </div>
     </nav>

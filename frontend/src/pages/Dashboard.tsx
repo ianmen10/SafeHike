@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Search, Sparkles, Compass, Activity } from 'lucide-react';
+import { Search, Sparkles, Compass } from 'lucide-react';
 import api from '../lib/api';
 
 import Navbar from '../components/layout/Navbar';
 import MountainCard from '../components/MountainCard';
 import WeatherWidget from '../components/WeatherWidget';
-import MountainGlobe3D from '../components/MountainGlobe3D';
+// import MountainGlobe3D from '../components/MountainGlobe3D'; // Removed heavy 3D globe
 
 interface Trail {
   id: number;
@@ -41,6 +41,7 @@ function MountainSkeleton() {
 export default function Dashboard() {
   const [search, setSearch] = useState('');
   const [selectedMountain, setSelectedMountain] = useState<Mountain | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState('All');
 
   const { data: mountains = [], isLoading, isError } = useQuery<Mountain[]>({
     queryKey: ['mountains'],
@@ -51,11 +52,12 @@ export default function Dashboard() {
   });
 
   const filtered = mountains.filter((m) =>
-    m.name.toLowerCase().includes(search.toLowerCase()) ||
-    m.location.toLowerCase().includes(search.toLowerCase())
+    (selectedRegion === 'All' || m.location.includes(selectedRegion)) &&
+    (m.name.toLowerCase().includes(search.toLowerCase()) ||
+     m.location.toLowerCase().includes(search.toLowerCase()))
   );
 
-  const totalTrails = mountains.reduce((acc, m) => acc + (m.trails?.length || 0), 0);
+
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500 selection:text-white pb-20">
@@ -67,74 +69,46 @@ export default function Dashboard() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
 
-        {/* 3D Hero Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          {/* Left Column Text & Call to Action */}
-          <div className="lg:col-span-6 space-y-6 animate-slide-up">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
-              <Sparkles className="h-3.5 w-3.5 animate-spin" /> PLATFORM PENDAKIAN 3D & AI
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-              Jelajahi Gunung <br />
-              <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400 bg-clip-text text-transparent">
-                Dalam Dimensi 3D.
-              </span>
-            </h1>
-
-            <p className="text-slate-400 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
-              Eksplorasi katalog gunung Indonesia dengan pemetaan topografi 3D, prakiraan cuaca real-time, dan pembuat rencana keselamatan pintar berbasis AI.
-            </p>
-
-            {/* 3D Floating Stats Widgets */}
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-800/80">
-              <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-md">
-                <p className="text-2xl sm:text-3xl font-black text-white">{mountains.length}</p>
-                <p className="text-[10px] text-slate-400 font-mono uppercase font-bold mt-0.5">Gunung Terdaftar</p>
-              </div>
-
-              <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-md">
-                <p className="text-2xl sm:text-3xl font-black text-emerald-400">{totalTrails}</p>
-                <p className="text-[10px] text-slate-400 font-mono uppercase font-bold mt-0.5">Jalur Pendakian</p>
-              </div>
-
-              <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-md">
-                <p className="text-2xl sm:text-3xl font-black text-sky-400 flex items-center gap-1">
-                  <Activity className="h-5 w-5 text-emerald-400 animate-pulse" /> 100%
-                </p>
-                <p className="text-[10px] text-slate-400 font-mono uppercase font-bold mt-0.5">SISTEM ONLINE</p>
-              </div>
-            </div>
+        {/* Refined Hero Section */}
+        <section className="text-center py-12 md:py-20">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-mono font-bold uppercase tracking-wider mb-4 mx-auto">
+            <Sparkles className="h-4 w-4 animate-pulse" /> AI-POWERED MOUNTAINEERING PLATFORM
           </div>
-
-          {/* Right Column: 3D Interactive Three.js Mountain Globe */}
-          <div className="lg:col-span-6">
-            <MountainGlobe3D />
-          </div>
-        </div>
-
-        {/* 3D Search & Filter Bar */}
-        <div className="relative z-20">
-          <div className="p-2 rounded-2xl bg-slate-900/80 border border-slate-800/80 backdrop-blur-2xl shadow-2xl flex flex-col sm:flex-row items-center gap-3">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6">
+            Perencanaan Pendakian <span className="text-brand-500">Cerdas, Aman, & Terintegrasi</span>
+          </h1>
+          <p className="text-slate-300 max-w-2xl mx-auto mb-6">
+            Jelajahi seluruh katalog gunung Indonesia dengan peta interaktif, cuaca real‑time, dan rekomendasi AI yang dipersonalisasi.
+          </p>
+          {/* Search Bar */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 max-w-2xl mx-auto mb-8">
             <div className="relative flex-1 w-full">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-emerald-400" />
               <input
                 type="text"
-                placeholder="Cari nama gunung, provinsi, atau lokasi GPS..."
+                placeholder="Cari gunung, provinsi, atau lokasi GPS..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder:text-slate-500 text-sm font-medium focus:outline-none focus:border-emerald-500 transition-all"
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-all"
               />
             </div>
-
-            <div className="flex items-center gap-2 w-full sm:w-auto px-2">
-              <span className="text-xs font-mono text-slate-400 whitespace-nowrap hidden md:inline-block">
-                Menampilkan: <strong className="text-emerald-400">{filtered.length}</strong> gunung
-              </span>
+            {/* Region Filter Tabs */}
+            <div className="flex gap-2">
+              {['All', 'Jawa', 'Sumatra', 'NTB', 'Bali'].map((region) => (
+                <button
+                  key={region}
+                  onClick={() => setSelectedRegion(region)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium ${selectedRegion === region ? 'bg-brand-500 text-white' : 'bg-slate-800 text-slate-400'} transition-colors`}
+                >
+                  {region}
+                </button>
+              ))}
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* Search and Region Filter (already moved to hero) */}
+        {/* Placeholder kept for possible future expansions */}
 
         {/* Error State */}
         {isError && (
