@@ -20,9 +20,10 @@ async def get_mountain_weather(
     if mountain.latitude is None or mountain.longitude is None:
         raise HTTPException(status_code=400, detail="Koordinat gunung belum diset.")
 
-    # Memanggil external service (Saat ini dimock)
+    # Memanggil weather service (Open-Meteo API real-time + fallback)
     weather_data = await weather_service.get_weather_for_location(
         latitude=mountain.latitude,
-        longitude=mountain.longitude
+        longitude=mountain.longitude,
+        mountain_name=mountain.name
     )
     return weather_data
